@@ -1,0 +1,33 @@
+# Python backend dependencies
+# Install with: pip install -r requirements.txt
+
+# ── WebSocket server ──────────────────────────────────────────────────────────
+websockets>=12.0
+
+# ── AI ────────────────────────────────────────────────────────────────────────
+google-generativeai>=0.7.0
+
+# ── Audio ─────────────────────────────────────────────────────────────────────
+# Speech-to-text
+SpeechRecognition>=3.10.0
+pyaudio>=0.2.13
+
+# Text-to-speech (primary)
+edge-tts>=6.1.9
+pydub>=0.25.1          # MP3 → PCM conversion for amplitude analysis
+
+# Text-to-speech (fallback)
+pyttsx3>=2.90
+
+# Wake word (optional – falls back to SpeechRecognition if not available)
+pvporcupine>=3.0.0
+
+# ── OS control ────────────────────────────────────────────────────────────────
+# Windows volume
+pycaw>=20240210
+
+# Cross-platform brightness
+screen-brightness-control>=0.23.0
+
+# Windows WMI (optional brightness fallback, Windows only)
+# wmi>=1.5.1  # uncomment on Windows if screen-brightness-control fails
