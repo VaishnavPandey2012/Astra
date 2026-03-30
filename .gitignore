@@ -1,0 +1,42 @@
+# ── Node / Electron ───────────────────────────────────────────────────────────
+node_modules/
+dist/
+dist-electron/
+.vite/
+*.log
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# ── Audio temp files ──────────────────────────────────────────────────────────
+*.mp3
+*.wav
+*.ogg
+
+# ── Secrets – NEVER commit real API keys ─────────────────────────────────────
+backend/config_local.py
+.env
+.env.*
+!.env.example
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo

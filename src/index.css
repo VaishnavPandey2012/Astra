@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #fff;
+  /* Crucial: the whole page must be fully transparent in idle state */
+  -webkit-app-region: no-drag;
+}
+
+/* ── Nova overlay root ────────────────────────────────────────────────────── */
+.nova-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Glowing border layers ────────────────────────────────────────────────── */
+
+/*
+ * The border glow is achieved with four absolutely-positioned strips
+ * (top / right / bottom / left) that each carry an animated gradient.
+ * Using strips instead of a single box-shadow allows individual control
+ * over thickness and colour position per-edge.
+ */
+
+.glow-strip {
+  position: absolute;
+  background-size: 400% 400%;
+  background-image: linear-gradient(
+    90deg,
+    #7C3AED 0%,
+    #3B82F6 15%,
+    #06B6D4 30%,
+    #EC4899 50%,
+    #F97316 65%,
+    #7C3AED 80%,
+    #3B82F6 100%
+  );
+  border-radius: 2px;
+  filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Top strip */
+.glow-strip.top    { top: 0;    left: 0; right: 0;  height: 6px; }
+/* Bottom strip */
+.glow-strip.bottom { bottom: 0; left: 0; right: 0;  height: 6px; }
+/* Left strip */
+.glow-strip.left   { top: 0; bottom: 0; left: 0;   width: 6px;  }
+/* Right strip */
+.glow-strip.right  { top: 0; bottom: 0; right: 0;  width: 6px;  }
+
+/* ── State: listening ─────────────────────────────────────────────────────── */
+.nova-listening .glow-strip {
+  opacity: 0.75;
+  filter: blur(10px);
+  animation: border-flow 4s ease infinite, pulse-opacity 2.5s ease-in-out infinite;
+}
+
+/* ── State: processing ────────────────────────────────────────────────────── */
+.nova-processing .glow-strip {
+  opacity: 1;
+  filter: blur(8px);
+  animation: border-flow 1.2s linear infinite;
+}
+
+/* ── State: speaking ──────────────────────────────────────────────────────── */
+.nova-speaking .glow-strip {
+  opacity: 1;
+  filter: blur(var(--glow-blur, 8px));
+  animation: border-flow 2s ease infinite;
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+@keyframes border-flow {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 0.55; }
+  50%       { opacity: 0.90; }
+}
+
+/* ── Transcript / status text ─────────────────────────────────────────────── */
+.nova-transcript {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 640px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.nova-status {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ── Waveform dots (speaking indicator) ──────────────────────────────────── */
+.nova-waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nova-waveform span {
+  display: block;
+  width: 4px;
+  border-radius: 2px;
+  background: #fff;
+  animation: wave-bar 1s ease-in-out infinite;
+}
+
+.nova-waveform span:nth-child(1) { animation-delay: 0s;    height: 8px;  }
+.nova-waveform span:nth-child(2) { animation-delay: 0.1s;  height: 16px; }
+.nova-waveform span:nth-child(3) { animation-delay: 0.2s;  height: 24px; }
+.nova-waveform span:nth-child(4) { animation-delay: 0.3s;  height: 16px; }
+.nova-waveform span:nth-child(5) { animation-delay: 0.4s;  height: 8px;  }
+
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.6; }
+  50%       { transform: scaleY(1.4); opacity: 1;   }
+}
